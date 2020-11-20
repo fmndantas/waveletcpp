@@ -45,7 +45,8 @@ int main() {
 
   // debug(x);
   
-  vector<vector<int>> mcw(m, vector<int>(mg)); // mcw
+  int sz = mg + n - m;		// tamanho da codificacao e da mcw com preenchimento nulo
+  vector<vector<int>> mcw(m, vector<int>(sz)); // mcw
   for (int i = 0; i < m; ++i) {
     for (int j = 0; j < mg; ++j) {
       cin >> mcw[i][j];
@@ -54,7 +55,6 @@ int main() {
 
   // debug(mcw);
 
-  int sz = mg + n - m;		// tamanho da codificacao
   vector<int> enc(sz);		// mensagem codificada
   int tmp;
   for (int i = 0, s = 0; i < n; i += m, ++s) { // codificacao
@@ -68,20 +68,11 @@ int main() {
   }
 
   // debug(enc);
-
-  vector<vector<int>> mcw0(m, vector<int>(sz)); // mcw com preenchimento nulo
-  for (int i = 0; i < m; ++i) {
-    for (int j = 0; j < mg; ++j) {
-      mcw0[i][j] = mcw[i][j];
-    }
-  }
-
-  // debug(mcw0);
   
   vector<int> dec(n);		// mensagem decodificada
   for (int i = 0, j = 0, r = 0; i < n; ++i, r = (r + 1) % m) { // decodificacao
     for (int k = 0; k < sz; ++k) {
-      dec[i] += mcw0[r][(k + j) % sz] * enc[k];
+      dec[i] += mcw[r][(k + j) % sz] * enc[k];
     }
     if ((i + 1) % m == 0) {
       j -= m;
