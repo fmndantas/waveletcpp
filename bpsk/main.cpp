@@ -9,29 +9,36 @@ using namespace std;
 
 int main() {
   auto seed = chrono::high_resolution_clock::now().time_since_epoch().count();
-  mt19937 mt(seed);	 // gerador de Mersenne, distribuicao uniforme
+  // gerador de Mersenne, distribuicao uniforme
+  mt19937 mt(seed);
 
-  int m, g, n, mg;	      // posto, genero e tamanho da informacao
+  int m, g, n, mg;
   cin >> m >> g >> n;
   mg = m * g;
-  
-  vector<int> X = {-1, 1}, x(n); // fonte  e informacao
-  for (int i = 0; i < n; ++i) {	 // preenchimento da informacao
+
+  // fonte e informacao
+  int X[] = {-1, 1}, x[n];
+  for (int i = 0; i < n; ++i) {
     int j = mt() % 2;
     x[i] = X[j];
   }  
+  
+  // tamanho do vetor codificação, mcw
+  int sz = mg + n - m, mcw[m][sz];
+  memset(mcw, 0, sizeof mcw);
 
-  int sz = mg + n - m; // tamanho da codificacao e da mcw com preenchimento nulo
-  vector<vector<int>> mcw(m, vector<int>(sz)); // mcw
   for (int i = 0; i < m; ++i) {
     for (int j = 0; j < mg; ++j) {
       cin >> mcw[i][j];
     }
   }
 
-  vector<int> enc(sz);		// mensagem codificada
-  int tmp;
-  for (int i = 0, s = 0; i < n; i += m, ++s) { // codificacao
+  // vector codificacao
+  int tmp, enc[sz];
+  memset(enc, 0, sizeof enc);
+
+  // codificacao
+  for (int i = 0, s = 0; i < n; i += m, ++s) {
     for (int j = 0; j < mg; ++j) {
       tmp = 0;
       for (int k = 0; k < m; ++k) {
@@ -41,8 +48,12 @@ int main() {
     }
   }
 
-  vector<int> dec(n);		// mensagem decodificada
-  for (int i = 0, j = 0, r = 0; i < n; ++i, r = (r + 1) % m) { // decodificacao
+  // vector decodificacao
+  int dec[n];
+  memset(dec, 0, sizeof dec);
+
+  // decodificacao
+  for (int i = 0, j = 0, r = 0; i < n; ++i, r = (r + 1) % m) {
     for (int k = 0; k < sz; ++k) {
       dec[i] += mcw[r][(k + j) % sz] * enc[k];
     }
@@ -60,7 +71,7 @@ int main() {
   
   cout << "n=" << n << " m=" << m << " g=" << g << '\n';
 
-  for (int i = 0; i < n; ++i) {	// sign(dec) deve ser igual a mensagem
+  for (int i = 0; i < n; ++i) {
     if (sign(dec[i]) != x[i]) {
       cout << "erro -> dec != x\n";
       return 0;
