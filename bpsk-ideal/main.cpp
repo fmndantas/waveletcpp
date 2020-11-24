@@ -53,7 +53,7 @@ int main() {
   int dec[n];
   memset(dec, 0, sizeof dec);
 
-  // codificacao
+  // decodificacao
   for (int i = 0, j = 0, r = 0; i < n; ++i, r = (r + 1) % m) {
     for (int k = 0; k < mg; ++k) {
       dec[i] += mcw[r][k] * enc[k + j];
