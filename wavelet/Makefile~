@@ -1,0 +1,10 @@
+main: waveletc.o
+	g++ waveletc.o -o main.out
+	@echo "Rodando testes da classe Wavelet"
+	@./main.out
+
+wavelet.o:
+	g++ waveletc.cpp -c waveletc.o
+
+clean:
+	rm *.o *.out
