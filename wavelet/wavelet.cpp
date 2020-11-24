@@ -1,34 +1,41 @@
 #include <vector>
-
 #include "wavelet.h"
 
-Wavelet::Wavelet(int m, int g) : m(m), g(g), mg(m * g) {
-  mcw.assign(this->m, std::vector<int>(this->mg));
+template <typename T>
+Wavelet<T>::Wavelet(int m, int g) : m(m), g(g), mg(m * g) {
+  mcw.assign(this->m, std::vector<T>(this->mg));
 }
 
-int Wavelet::get_m() {
+template <typename T>
+int Wavelet<T>::get_m() {
   return this->m;
 }
 
-int Wavelet::get_g() {
+template <typename T>
+int Wavelet<T>::get_g() {
   return this->g;
 }
 
-int Wavelet::get_mg() {
+template <typename T>
+int Wavelet<T>::get_mg() {
   return this->mg;
 }
 
-void Wavelet::set_mcw(const std::vector<std::vector<int>>& mcw) {
+template <typename T>
+void Wavelet<T>::set_mcw(const std::vector<std::vector<T>>& mcw) {
   this->mcw = mcw;
 }
 
-std::vector<std::vector<int>> Wavelet::get_mcw() {
+template <typename T>
+std::vector<std::vector<T>> Wavelet<T>::get_mcw() {
   return this->mcw;
 }
 
-std::vector<int> Wavelet::encode(const std::vector<int>& to_encode) {
-  int n = (int) to_encode.size(), tmp;
-  std::vector<int> enc(mg + n - m);
+template <typename T>
+std::vector<T> Wavelet<T>::encode(const std::vector<T>& to_encode) {
+  int n = (int) to_encode.size();
+  T tmp;
+  std::vector<T> enc(mg + n - m);
   for (int i = 0, s = 0; i < n; i += this->m, ++s) {
     for (int j = 0; j < this->mg; ++j) {
       tmp = 0;
@@ -41,8 +48,9 @@ std::vector<int> Wavelet::encode(const std::vector<int>& to_encode) {
   return enc;
 }
 
-std::vector<int> Wavelet::decode(const int n, const std::vector<int>& enc) {
-  std::vector<int> dec(n);
+template <typename T>
+std::vector<T> Wavelet<T>::decode(const int n, const std::vector<T>& enc) {
+  std::vector<T> dec(n);
   for (int i = 0, j = 0, r = 0; i < n; ++i, r = (r + 1) % this->m) {
     for (int k = 0; k < this->mg; ++k) {
       dec[i] += this->mcw[r][k] * enc[k + j];
@@ -53,3 +61,6 @@ std::vector<int> Wavelet::decode(const int n, const std::vector<int>& enc) {
   }
   return dec;
 }
+
+template class Wavelet<int>;
+template class Wavelet<double>;

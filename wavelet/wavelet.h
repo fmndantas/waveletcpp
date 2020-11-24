@@ -3,10 +3,11 @@
 #ifndef WAVELET_H
 #define WAVELET_H
 
+template <typename T>
 class Wavelet {
  private:
   int m, g, mg;
-  std::vector<std::vector<int>> mcw;
+  std::vector<std::vector<T>> mcw;
 
  public:
   Wavelet(int m, int g);
@@ -17,13 +18,13 @@ class Wavelet {
 
   int get_mg();
 
-  void set_mcw(const std::vector<std::vector<int>>& mcw);
+  void set_mcw(const std::vector<std::vector<T>>& mcw);
 
-  std::vector<std::vector<int>> get_mcw();
+  std::vector<std::vector<T>> get_mcw();
 
-  std::vector<int> encode(const std::vector<int>& to_encode);
+  std::vector<T> encode(const std::vector<T>& to_encode);
 
-  std::vector<int> decode(const int n, const std::vector<int>& enc);
+  std::vector<T> decode(const int n, const std::vector<T>& enc);
 };
 
 #endif
