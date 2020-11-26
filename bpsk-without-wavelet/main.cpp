@@ -20,35 +20,35 @@ int main() {
   
   default_random_engine generator;
 
-  // fonte
+  // source
   const vector<double> X = {-1, 1};
   
-  // simulacao para variacao do EbN0
+  // varying EbN0 simulation
   for (int EbN0_db = EbN0_min; EbN0_db <= EbN0_max; ++EbN0_db) {
     double EbN0_linear = powf(10, 0.1 * EbN0_db);
     double N0 = 1 / EbN0_linear;
     double sigma = sqrtf(N0 / 2);
     
-    // modulacao
+    // modulation
     vector<double> x(n);	
     for (int i = 0; i < n; ++i) {
       x[i] = X[mt() % 2];
     }
 
-    // transmissao pelo canal
+    // channel transmission
     vector<double> x_channel(x.begin(), x.end());
     normal_distribution<double> distribution(0, sigma);
     for (int i = 0; i < n; ++i) {
       x_channel[i] += distribution(generator);
     }
 
-    // demodulacao
+    // demodulation
     vector<int> y(n);
     for (int i = 0; i < n; ++i) {
       y[i] = x_channel[i] >= 0 ? 1 : -1;
     }
     
-    // verificacao dos bits com erro
+    // counting wrong bits
     int ans = 0;
     for (int i = 0; i < n; ++i) {
       ans += (x[i] != y[i]);
