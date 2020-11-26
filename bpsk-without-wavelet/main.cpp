@@ -54,7 +54,7 @@ int main() {
       ans += (x[i] != y[i]);
     }
     
-    cout << EbN0_db << ' ' << 1.0 * ans / n << '\n';
+    cout << EbN0_db << ' ' << 1.0 * ans / n << ' ' << 0.5 * erfc(sqrtf(EbN0_linear)) << '\n';
   }
   
 }
