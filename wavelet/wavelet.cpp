@@ -31,6 +31,11 @@ std::vector<std::vector<T>> Wavelet<T>::get_mcw() {
   return this->mcw;
 }
 
+/**
+   Each m-slice of input is multiplied by MCW 
+   and the result is accumulated from position 
+   m onwards on enc vector.
+ */
 template <typename T>
 std::vector<T> Wavelet<T>::encode(const std::vector<T>& to_encode) {
   int n = (int) to_encode.size();

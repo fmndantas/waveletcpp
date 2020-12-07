@@ -1,10 +1,14 @@
 main: main.o wavelet.o
 	@echo "-> main.out"
 	@g++ -o main.out main.o wavelet.o
-	@echo "Rodando testes da classe Wavelet"
-	@./main.out
+	@echo "-> input: test-2-128"
+	@./main.out < ./test-2-128
+	@echo "-> input: test-2-8"
+	@./main.out < ./test-2-8
+	@echo "-> input: test-4-16"
+	@./main.out < ./test-4-16
 
-main.o:
+main.o: main.cpp
 	@echo "-> main.o"
 	@g++ main.cpp -c
 
