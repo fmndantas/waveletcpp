@@ -4,7 +4,7 @@
 using namespace std;
 
 /**
-   BPSK transmission through channel with white-noise and without wavelet encoding
+   BPSK transmission through channel with white-noise, wavelet encoding and ask modulation
    EbN0 as varying parameter
    Hard-decoding decision scheme: source -> encoding -> modulation -> channel -> demodulation -> decoding -> error estimation
 */
