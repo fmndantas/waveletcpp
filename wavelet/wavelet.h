@@ -10,7 +10,7 @@ class Wavelet {
   std::vector<std::vector<T>> mcw;
 
  public:
-  Wavelet(int m, int g);
+  Wavelet(int _m, int _g);
 
   int get_m();
 
@@ -18,7 +18,7 @@ class Wavelet {
 
   int get_mg();
 
-  void set_mcw(const std::vector<std::vector<T>>& mcw);
+  void set_mcw(const std::vector<std::vector<T>>& _mcw);
 
   std::vector<std::vector<T>> get_mcw();
 

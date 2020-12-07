@@ -2,7 +2,7 @@
 #include "wavelet.h"
 
 template <typename T>
-Wavelet<T>::Wavelet(int m, int g) : m(m), g(g), mg(m * g) {
+Wavelet<T>::Wavelet(int _m, int _g) : m(_m), g(_g), mg(_m * _g) {
   mcw.assign(this->m, std::vector<T>(this->mg));
 }
 
@@ -22,8 +22,8 @@ int Wavelet<T>::get_mg() {
 }
 
 template <typename T>
-void Wavelet<T>::set_mcw(const std::vector<std::vector<T>>& mcw) {
-  this->mcw = mcw;
+void Wavelet<T>::set_mcw(const std::vector<std::vector<T>>& _mcw) {
+  this->mcw = _mcw;
 }
 
 template <typename T>
