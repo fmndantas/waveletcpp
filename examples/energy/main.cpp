@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 
 using namespace std;
 
@@ -24,59 +24,42 @@ template <typename Head, typename... Tail> void debug_out(Head H, Tail... T) { c
 #define debug(...)
 #endif
 
-/**
-   BPSK transmission through channel with white-noise without wavelet encoding
-   EbN0 as varying parameter
-*/
-
-auto seed = chrono::high_resolution_clock::now().time_since_epoch().count(); mt19937 mt(seed);
-
-int simulate(double EbN0_linear, int n) {
-  double N0 = 1 / EbN0_linear;
-  double sigma = sqrtf(N0 / 2);
-  // source
-  const vector<double> X = {-1, 1};
-  // modulation with bask scheme
-  vector<double> x(n);	
-  for (int i = 0; i < n; ++i) {
-    x[i] = X[mt() % 2];
-  }
-  // channel transmission
-  vector<double> x_channel(x.begin(), x.end());
-  normal_distribution<double> distribution(0, sigma);
-  default_random_engine generator;
-  for (int i = 0; i < n; ++i) {
-    x_channel[i] += distribution(generator);
-  }
-  vector<int> y(n, -1);
-  for (int i = 0; i < n; ++i) {
-    if (x_channel[i] >= 0) {
-      y[i] = 1;
-    }
-  }    
-  // counting wrong bits
-  int ret = 0;
-  for (int i = 0; i < n; ++i) {
-    ret += (x[i] != y[i]);
-  }
-  return ret;
+double Ic(int g) {
+  return 5 * pow(2, g - 1)  + 2 * (g - 4) + 17.25;
 }
 
 int main() {
-  ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
-  cout << fixed << setprecision(10);  
-  int n, EbN0_min, EbN0_max;
-  cin >> n >> EbN0_min >> EbN0_max;
-  cout << EbN0_max - EbN0_min + 1 << '\n';
-  // varying EbN0 simulation
-  for (int EbN0_db = EbN0_min; EbN0_db <= EbN0_max; ++EbN0_db) {    
-    double EbN0_linear = powf(10, 0.1 * EbN0_db), pe_t = 0.5 * erfc(sqrtf(EbN0_linear));
-    int n_runs = ceil((50.0 / pe_t) / n), now = 0;
-    for (int i = 0; i < n_runs; ++i) {
-      now += simulate(EbN0_linear, n);
-    }
-    cout << setw(2) << EbN0_db << setw(15) << 1.0 * now / (n_runs * n) << ' ' << setw(15) << pe_t << '\n';
+  cout << fixed << setprecision(10);
+
+  // number of ebn0 points and input reading
+  int n, g;
+  cin >> n >> g;
+  vector<double> ebn0(n), wrong(n), frame(n);
+  for (int i = 0; i < n; ++i) {
+    cin >> ebn0[i] >> wrong[i] >> frame[i];
   }
   
-}
+  cout << n << '\n';
 
+  // microprocessor parameters
+  double Pproc = 24e-3, Ptx = 1e-3, Prx = 1e-3, I = 868e6, Rb = 500e3, f_d = 1e5;
+ 
+  // energy computation
+  for (int i = 0; i < n; ++i) {
+    double E_bit_denc = Ic(g) * Pproc / I;
+    double E_bit_trns = (Ptx + Prx) / Rb;
+
+    double E_frm_denc = E_bit_denc * f_d;
+    double E_frm_trns = E_bit_trns * f_d;
+
+    double BER = wrong[i] / frame[i];
+    double FER = 1 - powf(1 - BER, f_d);
+    double Nrtx = 1 / (1 - FER);
+    
+    double E_frm_total = E_frm_denc + Nrtx * (E_frm_denc + E_frm_trns);
+
+    cout << ebn0[i] << ' ' << BER << ' ' << E_frm_total << ' ' << Nrtx << '\n';
+  }
+  
+  return 0;
+}
