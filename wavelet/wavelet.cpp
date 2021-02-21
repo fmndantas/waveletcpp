@@ -35,6 +35,8 @@ std::vector<std::vector<T>> Wavelet<T>::get_mcw() {
    Each m-slice of input is multiplied by MCW 
    and the result is accumulated from position 
    m onwards on enc vector.
+
+   y = x Cmcw
  */
 template <typename T>
 std::vector<T> Wavelet<T>::encode(const std::vector<T>& to_encode) {
@@ -53,6 +55,14 @@ std::vector<T> Wavelet<T>::encode(const std::vector<T>& to_encode) {
   return enc;
 }
 
+/**
+   Multiplies Cmcw by transposed column vector y^T.
+   Shifting the Cmcw lines to the right by m units is the same
+   than shifting the vector y^T to the left by m units, in the
+   context of matrix mutiplication. The second approach is followed
+
+   z = Cmcw y^T
+*/
 template <typename T>
 std::vector<T> Wavelet<T>::decode(const int n, const std::vector<T>& enc) {
   std::vector<T> dec(n);
