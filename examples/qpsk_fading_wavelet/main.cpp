@@ -42,7 +42,8 @@ int main() {
   cout << fixed << setprecision(10);
 
   // n raw bits
-  int n, m, g, EbN0_min, EbN0_max, EbN0_step, loErr, loTotal;
+  int n, m, g, EbN0_min, EbN0_max, EbN0_step, loErr;
+  long long loTotal;
   cin >> n >> m >> g >> EbN0_min >> EbN0_max >> EbN0_step >> loErr >> loTotal;
 
   // loading wavelet
@@ -63,7 +64,7 @@ int main() {
   default_random_engine generator;
 
   // fading distribution
-  normal_distribution<double> alpha_g(0, 0.5);
+  normal_distribution<double> alpha_g(0, sqrt(0.5));
 
   auto sgn = [](double x) {
     return x < 0 ? -1 : 1;
@@ -71,11 +72,10 @@ int main() {
   
   auto simulate = [&](double ebn0_linear) {
     const int N = n / 2;
-    // todo: conferir variancia
     const double n0 = 0.5 * m * g / ebn0_linear;
     const double stddev = sqrt(n0 / 2);
     
-    // source + modulation
+    // source + mapping
     vector<double> modulated_p(N), modulated_q(N);
     for (int i = 0; i < N; ++i) {
       modulated_p[i] = M[mt() % 2];
@@ -130,7 +130,7 @@ int main() {
       total += n;
       debug(EbN0_db, errors, total);
     }
-    cout << EbN0_db << ' ' << max(1, errors) << ' ' << total << '\n';
+    cout << EbN0_db << ' ' << errors << ' ' << total << '\n';
   }
   
 }

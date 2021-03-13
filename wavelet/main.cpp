@@ -60,6 +60,8 @@ int main() {
     alphabet.insert(i);
   }
 
+  vector<int> encoded = w.encode(message);
+
   for (int i = 0; i < (int) encoded.size(); ++i) {
     if (alphabet.count(encoded[i]) == 0) {
       cerr << "=> symbol not from alphabet\n";

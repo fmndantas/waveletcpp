@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include "../wavelet/wavelet.h"
+#include "../../wavelet/wavelet.h"
 
 using namespace std;
 

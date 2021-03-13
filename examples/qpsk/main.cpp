@@ -68,7 +68,7 @@ int main() {
     vector<complex<double>> modulated(N);
     for (int i = 0; i < N; ++i) {
       double real = M[mt() % 2], imag = M[mt() % 2];
-      modulated[i] = complex<double>(real, imag);
+      modulated[i] = complex<double>(real, imag);  
     }
 
     // channel
@@ -80,15 +80,15 @@ int main() {
     }
     vector<complex<double>> channeled(N);
     for (int i = 0; i < N; ++i) {
-      channeled[i] = alpha[i] * modulated[i] + awgn[i];
+      channeled[i] = modulated[i] + awgn[i];
     }
 
     // equalization
-    vector<complex<double>> equalized(N);
-    for (int i = 0; i < N; ++i) {      
-      double k = norm(alpha[i]) + 1 / ebn0_linear;
-      equalized[i] = (channeled[i] * conj(alpha[i])) / k;
-    }
+    vector<complex<double>> equalized(channeled.begin(), channeled.end());
+    // for (int i = 0; i < N; ++i) {      
+    //   double k = norm(alpha[i]) + 1 / ebn0_linear;
+    //   equalized[i] = (channeled[i] * conj(alpha[i])) / k;
+    // }
 
     // demodulation + error computation
     int ret = 0;
@@ -100,7 +100,6 @@ int main() {
 	ret++;
       }
     }
-
     return ret;    
   };
 
@@ -109,12 +108,12 @@ int main() {
   for (int EbN0_db = EbN0_min; EbN0_db <= EbN0_max; EbN0_db += EbN0_step) {    
     const double ebn0_linear = powf(10, 0.1 * EbN0_db);    
     int errors = 0, total = 0;
+    double pe_t = 0.5 * erfc(sqrt(ebn0_linear));
     while (errors < 50 && total < 1e9) {
       errors += simulate(ebn0_linear);
       total += n;
-      debug(EbN0_db, errors);
     }
-    cout << EbN0_db << ' ' << errors << ' ' << total << '\n';
+    cout << EbN0_db << ' ' << 1.0 * errors / total << ' ' << pe_t << '\n';
   }
   
 }
