@@ -5,6 +5,7 @@ FLAGS = -pass-exit-codes -Wshadow -Wall -O2 -Wno-unused-result
 INPUT1 = ./inputs/ber_qpsk_fading
 INPUT2 = ./inputs/ber_qpsk_fading_wavelet_2_8
 INPUT3 = ./inputs/ber_qpsk_fading_wavelet_4_16
+INPUT4 = ./inputs/ber_qpsk_fading_wavelet_2_128
 
 OUTPUT1 = ./outputs/energy_qpsk_fading
 OUTPUT2 = ./outputs/energy_qpsk_fading_wavelet_2_8

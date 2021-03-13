@@ -112,7 +112,7 @@ int main() {
     while (errors < 50 && total < 1e9) {
       errors += simulate(ebn0_linear);
       total += n;
-      debug(EbN0_db, errors);
+      debug(EbN0_db, errors, total);
     }
     cout << EbN0_db << ' ' << errors << ' ' << total << '\n';
   }
