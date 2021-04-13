@@ -124,7 +124,7 @@ int main() {
   cout << EbN0_max / EbN0_step - EbN0_min / EbN0_step + 1 << ' ' << g << '\n';
   for (int EbN0_db = EbN0_min; EbN0_db <= EbN0_max; EbN0_db += EbN0_step) {
     const double ebn0_linear = powf(10, 0.1 * EbN0_db);    
-    int errors = 0, total = 0;
+    long long errors = 0, total = 0;
     while (errors < loErr && total < loTotal) {
       errors += simulate(ebn0_linear);
       total += n;
