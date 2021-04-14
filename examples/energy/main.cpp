@@ -79,11 +79,11 @@ int main() {
   double ia = 67e-6 * (I / 1e6);
   double pproc = va * ia;
   double ebitcod = tb * pproc;
-  double fsz = 10 * 8;
+  double fsz = 102 * 8;
   double eframecod = ebitcod * fsz;
   
   // propagation parameters
-  double d = 100;
+  double d = 25;
   double f = 2.4e9;
   double n0 = 1.380649e-23 * 303; 
 
