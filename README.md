@@ -1,3 +1,3 @@
 # waveletcpp
 
-* Encoding and decoding of digital bit streams with Wavelet Coding Matrices
+Encoding and decoding of digital bit streams with Wavelet Coefficients Matrices
